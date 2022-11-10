@@ -1,0 +1,13 @@
+{{> layouts/header}}
+<form class="container" action="/articles" method="post">
+    <div class="mb-3">
+        <label for="exampleInputTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="exampleInputTitle" name="title" aria-describedby="title">
+        <div id="emailHelp" class="form-text">제목을 입력하시오 </div>
+        <label for="exampleInputContent" class="form-label">Content</label>
+        <input type="text" class="form-control" id="exampleInputContent" name="content" aria-describedby="content">
+        <div id="emailHelp" class="form-text">내용을 입력하시오 </div>
+    </div>
+    <button type="submit" class="btn btn-primary">제출</button>
+</form>
+{{> layouts/footer}}
