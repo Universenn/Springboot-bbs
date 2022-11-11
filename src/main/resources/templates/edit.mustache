@@ -1,11 +1,36 @@
-여기는 Edit Page입니다.
-{{#article}}
-    <form action="/articles/{{id}}/update" method="post">
-        <input type="hidden" name="id" value="{{id}}">
-        <input type="text" name="title" value="{{title}}" />
-        <textarea rows="3" name="content">{{content}}</textarea>
-        <input type="submit"/>
-    </form>
-    <a href="/articles/{{id}}">1개 조회 페이지</a>
-    <a href="/articles">목록</a>
-{{/article}}
+{{> layouts/header}}
+    {{#article}}
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Content</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#article}}
+                <tr>
+                    <th scope="row">{{id}}</th>
+                    <td>{{title}}</td>
+                    <td>{{content}}</td>
+                </tr>
+            {{/article}}
+            </tbody>
+        </table>
+        <form class="container" action="/articles/{{id}}/update" method="post">
+            <div class="mb-3">
+                <input type="hidden" name="id" value="{{id}}">
+        <!--        <input type="text" name="title" value="{{title}}" />-->
+                <label for="exampleInputTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="exampleInputTitle" name="title" aria-describedby="title" value="{{title}}" />
+                <div id="emailHelp" class="form-text">수정할 제목 입력</div>
+        <!--        <textarea rows="3" name="content">{{content}}</textarea>-->
+                <label for="exampleInputContent" class="form-label">Content</label>
+                <input type="text" class="form-control" id="exampleInputContent" name="content" aria-describedby="content" value="{{content}}" />
+                <div id="emailHelp" class="form-text">내용을 입력하시오 </div>
+            </div>
+            <input type="submit"/>
+        </form>
+    {{/article}}
+{{> layouts/footer}}

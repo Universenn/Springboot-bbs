@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/articles")
+@RequestMapping("")
 @Slf4j
 public class ArticleController {
 
@@ -26,25 +26,30 @@ public class ArticleController {
         this.articleRepository = articleRepository;
     }
 
+    @GetMapping("")
+    public String helloPage() {
+        return "juwan";
+    }
 
-    @GetMapping("/new")
+
+    @GetMapping("/articles/new")
     public String createPage() {
         return "new";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/articles/list")
     public String list(Model model) {
         List<Article> articles = articleRepository.findAll();
         model.addAttribute("articles", articles);
         return "list";
     }
 
-    @GetMapping("")
+    @GetMapping("/articles")
     public String index() {
         return "redirect:/articles/list";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/articles/{id}")
     public String selectSingle(@PathVariable Long id, Model model) {
         Optional<Article> optArticle = articleRepository.findById(id);
 
@@ -57,7 +62,7 @@ public class ArticleController {
         }
     }
 
-    @PostMapping("")
+    @PostMapping("/articles")
     public String add(ArticleDto articleDto) {
         log.info(articleDto.getTitle());
         Article savedArticle = articleRepository.save(articleDto.toEntity());
@@ -66,7 +71,7 @@ public class ArticleController {
         // souf %d %s
         return String.format("redirect:/articles/%d", savedArticle.getId());
     }
-    @GetMapping("/{id}/edit")
+    @GetMapping("/articles/{id}/edit")
     public String edit(@PathVariable Long id, Model model) {
         Optional<Article> optionalArticle = articleRepository.findById(id);
         if (!optionalArticle.isEmpty()) {
@@ -77,15 +82,15 @@ public class ArticleController {
             return "error";
         }
     }
-    @PostMapping("/{id}/update")
+    @PostMapping("/articles/{id}/update")
     public String update(@PathVariable Long id, ArticleDto articleDto, Model model) {
         log.info("title:{} content:{}", articleDto.getTitle(), articleDto.getContent());
         Article article = articleRepository.save(articleDto.toEntity());
         model.addAttribute("article", article);
-        return String.format("redirect:/articles/show", article.getId());
+        return String.format("redirect:/articles/list", article.getId());
     }
 
-    @GetMapping("/{id}/delete")
+    @GetMapping("/articles/{id}/delete")
     public String delete(@PathVariable Long id){
         articleRepository.deleteById(id);
         return "redirect:/articles";
