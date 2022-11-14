@@ -20,12 +20,14 @@ public class Hospital {
     @Id // GeneratedValue안씀
     private Integer id; // Long --> bigint
 
-    @Column(name = "hospital_name")
-    private String HospitalName;
-
+    @Column(name = "road_name_address")
     private String roadNameAddress;
 
-    public static Hospital of(Integer id) {
-        return Hospital.builder().id(id).build();
-    }
+    @Column(name = "hospital_name")
+    private String hospitalName;
+    private Integer patientRoomCount;
+    private Integer totalNumberOfBeds;
+    private String businessTypeName;
+    private Float totalAreaSize;
+
 }
