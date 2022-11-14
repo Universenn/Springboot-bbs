@@ -21,3 +21,19 @@ SELECT hospital_name, road_name_address FROM `likelion-db`.nation_wide_hospitals
 where road_name_address like "경기도 수원시%"
   and hospital_name like "%피부과%"
 ;
+
+
+-- 병상수 10 초과
+SELECT hospital_name, patient_room_count FROM `likelion-db`.nation_wide_hospitals
+where patient_room_count > 10
+order by patient_room_count desc;
+
+-- 병상수 10 초과 20미만
+SELECT hospital_name, patient_room_count FROM `likelion-db`.nation_wide_hospitals
+where patient_room_count >= 10 and patient_room_count < 20
+order by patient_room_count desc;
+
+-- 10이상 20미만 between
+SELECT hospital_name, patient_room_count FROM `likelion-db`.nation_wide_hospitals
+where patient_room_count between 10 and 19
+order by patient_room_count desc;
