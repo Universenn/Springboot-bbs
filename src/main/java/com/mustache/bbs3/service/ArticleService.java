@@ -1,5 +1,7 @@
 package com.mustache.bbs3.service;
 
+import com.mustache.bbs3.domain.dto.ArticleAddRequest;
+import com.mustache.bbs3.domain.dto.ArticleAddResponse;
 import com.mustache.bbs3.domain.dto.ArticleDto;
 import com.mustache.bbs3.domain.dto.HospitalResponse;
 import com.mustache.bbs3.domain.entity.Article;
@@ -24,5 +26,17 @@ public class ArticleService {
         Article article = optHospital.get();
         ArticleDto articleDto = article.of(article); // DTO
         return articleDto;
+    }
+
+
+    public ArticleAddResponse addArticle(ArticleAddRequest articleAddRequest) {
+        //requestdto -> entity
+        Article article = articleAddRequest.toArticle();
+
+        //save entity
+        Article savedArticle = articleRepository.save(article);
+
+        //entity -> responsedto
+        return new ArticleAddResponse(savedArticle.getId(), savedArticle.getTitle(), savedArticle.getContent());
     }
 }

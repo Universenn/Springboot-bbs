@@ -1,18 +1,26 @@
 package com.mustache.bbs3.controller;
 
+
+import com.mustache.bbs3.domain.dto.ArticleAddRequest;
+import com.mustache.bbs3.domain.dto.ArticleAddResponse;
 import com.mustache.bbs3.domain.dto.ArticleDto;
-import com.mustache.bbs3.domain.entity.Article;
 import com.mustache.bbs3.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,6 +31,8 @@ class ArticleRestControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
     @MockBean
     ArticleService articleService;
 
@@ -43,27 +53,26 @@ class ArticleRestControllerTest {
 
         verify(articleService).getArticle(id);
     }
-//    @Test
-//    @DisplayName("Json 확인")
-//    void jsonResponse() throws Exception {
-//        ArticleDto articleDto =
-//                ArticleDto.builder()
-//                        .id(23L)
-//                        .title("23제목")
-//                        .content("23내용")
-//                        .build();
-//        given(articleService.getArticle(23L))
-//                .willReturn(articleDto);
-//
-//
-//        Long articleId = 1L;
-//        String url = String.format("/api/v1/hospitals/%d", articleId);
-//        mockMvc.perform(get(url))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.content").exists())
-//                .andExpect(jsonPath("$.content").value("23내용"))
-//                .andDo(print());
-//
-//        verify(articleService).getArticle(articleId);
-//    }
+    @Test
+    @DisplayName("한 개의 게시글 등록하기")
+    void addArticle() throws Exception {
+        ArticleAddRequest dto = new ArticleAddRequest("제목입니다.", "내용입니다.");
+        given(articleService.addArticle(any())).willReturn(new ArticleAddResponse(3L, dto.getTitle(), dto.getContent()));
+
+        Long articleId = 24L;
+        String url = String.format("/api/v1/articles/%d", articleId);
+
+        mockMvc.perform(
+                        post(url)
+                                .content(objectMapper.writeValueAsBytes(new ArticleAddRequest("제목입니다.", "내용입니다.")))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.title").exists())
+                .andExpect(jsonPath("$.title").value("제목입니다."))
+                .andExpect(jsonPath("$.content").exists())
+                .andDo(print());
+
+        verify(articleService).addArticle(refEq(dto));
+    }
 }
