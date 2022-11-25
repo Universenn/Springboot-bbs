@@ -1,15 +1,17 @@
 package com.mustache.bbs3.controller;
 
+import com.mustache.bbs3.domain.dto.ReviewCreateRequest;
+import com.mustache.bbs3.domain.dto.ReviewCreateResponse;
 import com.mustache.bbs3.domain.entity.Hospital;
 import com.mustache.bbs3.repository.HospitalRepository;
+import com.mustache.bbs3.service.ReviewService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/hospitals")
@@ -18,19 +20,16 @@ public class HospitalController {
 
     private final HospitalRepository hospitalRepository;
 
-    public HospitalController(HospitalRepository hospitalRepository) {
+    public final ReviewService reviewService;
+    public HospitalController(HospitalRepository hospitalRepository, ReviewService reviewService) {
         this.hospitalRepository = hospitalRepository;
+        this.reviewService = reviewService;
     }
 
-//    @GetMapping("")
-//    public String list(Pageable pageable, Model model) {
-//        Page<Hospital> hospitals = hospitalRepository.findAll(pageable);
-//        log.info("size:{}", hospitals.getSize());
-//        model.addAttribute("hospitals", hospitals);
-//        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
-//        model.addAttribute("next", pageable.next().getPageNumber());
-//        return "hospitals/list";
-//    }
+    @PostMapping("/{id}/reviews")
+    public ResponseEntity<ReviewCreateResponse> get(@PathVariable Integer id, @RequestBody ReviewCreateRequest reviewCreateRequest) {
+        return ResponseEntity.ok().body(reviewService.add(reviewCreateRequest));
+    }
 
     @GetMapping("")
     public String list(@RequestParam(value = "keyword", required = false) String keyword , Pageable pageable, Model model) {
@@ -46,6 +45,18 @@ public class HospitalController {
         model.addAttribute("next", pageable.next().getPageNumber());
         return "hospitals/list";
     }
+
+
+//    @GetMapping("")
+//    public String list(Pageable pageable, Model model) {
+//        Page<Hospital> hospitals = hospitalRepository.findAll(pageable);
+//        log.info("size:{}", hospitals.getSize());
+//        model.addAttribute("hospitals", hospitals);
+//        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+//        model.addAttribute("next", pageable.next().getPageNumber());
+//        return "hospitals/list";
+//    }
+
 //    @GetMapping("")
 //    public String list(@RequestParam String keyword, Pageable pageable, Model model) {
 //        // keyword는 어떻게 받을 것인가?

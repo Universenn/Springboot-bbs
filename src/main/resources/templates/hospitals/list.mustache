@@ -1,6 +1,11 @@
 {{>layouts/header}}
 <form action="/hospitals" method="get">
-    지역: <input type="text" name="keyword" />
+    {{#keyword}}
+        지역: <input type="text" name="keyword" value="{{keyword}}"/>
+    {{/keyword}}
+    {{^keyword}}
+        지역: <input type="text" name="keyword"/>
+    {{/keyword}}
     <input type="submit" />
 </form>
 <table class="table table-striped">
