@@ -1,0 +1,39 @@
+###
+GET /hello
+
+###
+GET http://localhost:8080/api/v1/hospitals/{{id}}
+
+###
+GET http://localhost:8080/api/v1/hospitals/9999999
+
+<> 2022-11-24T013713.500.json
+<> 2022-11-24T013703.200.json
+<> 2022-11-24T013604.200.json
+<> 2022-11-24T010744.200.json
+
+###
+GET http://localhost:8080/api/v1/members/{{id}}
+
+###
+GET http://localhost:8080/api/v1/members/6
+
+<> 2022-11-24T013628.200.json
+<> 2022-11-24T013610.500.json
+<> 2022-11-24T013548.500.json
+<> 2022-11-24T013252.200.json
+
+###
+POST http://localhost:8080/hospitals/1/reviews
+Content-Type: application/json
+
+{
+  "hospitalId": 1,
+  "title": "방문 후기",
+  "content": "원장님이 침을 잘 놓으시네요",
+  "userName": "징징이"
+}
+
+<> 2022-11-25T114214.200.json
+<> 2022-11-25T114159.500.json
+
